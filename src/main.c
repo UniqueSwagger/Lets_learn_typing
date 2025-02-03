@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include "typing_test.h"
-#include "text_data.h"
+#include "data.h"
 #include <stdio.h>
 
 

@@ -1,6 +1,6 @@
 #include "typing_test.h"
 #include "ncurses.h"
-#include "text_functions.h"
+#include "functions.h"
 
 void initialize_colors() {
     init_pair(1, COLOR_GREEN, -1);
@@ -78,7 +78,7 @@ void reset_input(char *input, char *text, char *next_text, size_t *pos, int word
     *pos = 0;
     strcpy(input, "");
     strcpy(text, next_text);
-    generate_text(next_text, words_per_line,difficulty);
+    gen_text(next_text, words_per_line,difficulty);
 
     clear();
     mvprintwa(0, 0, COLOR_PAIR(6), "Type this text:");
@@ -190,8 +190,8 @@ void start_typing_test(int difficulty) {
     move(0, 0);
     clrtoeol();
 
-    generate_text(text, words_per_line, difficulty);
-    generate_text(next_text, words_per_line, difficulty);
+    gen_text(text, words_per_line, difficulty);
+    gen_text(next_text, words_per_line, difficulty);
     mvprintwa(0, 0, COLOR_PAIR(6), "Type this text:");
     mvprintw(1, 0, "%s", text);
     mvprintw(2, 0, "%s", next_text);

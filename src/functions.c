@@ -2,9 +2,9 @@
 #include <string.h>
 #include <stdlib.h>
 #include <ncurses.h>
-#include "text_functions.h"
-#include "text_data.h"
-void generate_text(char *text, int num_words, int difficulty) {
+#include "functions.h"
+#include "data.h"
+void gen_text(char *text, int num_words, int difficulty) {
     int size = sizeof(words) / sizeof(words[0]);
     strcpy(text, "");
     for (int i = 0; i < num_words; ++i) {
