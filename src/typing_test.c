@@ -70,7 +70,7 @@ void update_screen(char *text, char *input, size_t pos, int correct_symbols, int
     double difference = difftime(time_now, start_time);
     double cpm = correct_symbols / (difference / 60);
     double wpm = (double)correct_words / (difference / 60);
-    mvprintwa(5, 0, COLOR_PAIR(1) | A_BOLD, "Words left: %d; Mistakes: %d; WPM: %.0lf; CPM: %.0lf\tTime: %.0lfs", words, mistakes_count, wpm, cpm, difference);
+    myMvPrint(5, 0, COLOR_PAIR(1) | A_BOLD, "Words left: %d; Mistakes: %d; WPM: %.0lf; CPM: %.0lf\tTime: %.0lfs", words, mistakes_count, wpm, cpm, difference);
     refresh();
 }
 
@@ -81,10 +81,10 @@ void reset_input(char *input, char *text, char *next_text, size_t *pos, int word
     gen_text(next_text, words_per_line,difficulty);
 
     clear();
-    mvprintwa(0, 0, COLOR_PAIR(6), "Type this text:");
+    myMvPrint(0, 0, COLOR_PAIR(6), "Type this text:");
     mvprintw(1, 0, "%s", text);
     mvprintw(2, 0, "%s", next_text);
-    mvprintwa(3, 0, COLOR_PAIR(6), "Your typing:");
+    myMvPrint(3, 0, COLOR_PAIR(6), "Your typing:");
     mvprintw(4, 0, "%-99s", " ");
 }
 
@@ -99,7 +99,7 @@ void display_final_stats(int correct_symbols, int correct_words, int mistakes_co
 
     clear();
     move(0, 0);
-    printwa(COLOR_PAIR(4), "Test completed!\n");
+    myPrint(COLOR_PAIR(4), "Test completed!\n");
     printw("Correct characters: %d\n", correct_symbols);
     printw("Mistakes: %d\n", mistakes_count);
     printw("Accuracy: %.0lf\n", accuracy);
@@ -107,7 +107,7 @@ void display_final_stats(int correct_symbols, int correct_words, int mistakes_co
     printw("Characters per minute (CPM): %.0lf\n", cpm);
     printw("Characters per second (CPS): %.0lf\n", cps);
     printw("Test duration: %.0lf seconds\n", test_duration);
-    printwa(COLOR_PAIR(2), "Press Esc to exit or Enter to restart the game.\n");
+    myPrint(COLOR_PAIR(2), "Press Esc to exit or Enter to restart the game.\n");
     refresh();
 
     while (1) {
@@ -117,11 +117,11 @@ void display_final_stats(int correct_symbols, int correct_words, int mistakes_co
         } else if (ch == 10) {
             // Prompt for difficulty selection
             clear();
-            printwa(COLOR_PAIR(3),"Select difficulty:\n");
-            printwa(COLOR_PAIR(4), "1. Easy (30 words)\n");
-            printwa(COLOR_PAIR(5), "2. Medium (60 words)\n");
-            printwa(COLOR_PAIR(6), "3. Hard (90 words)\n");
-            printwa(COLOR_PAIR(4), "Press 1, 2 or 3: ");
+            myPrint(COLOR_PAIR(3),"Select difficulty:\n");
+            myPrint(COLOR_PAIR(4), "1. Easy (30 words)\n");
+            myPrint(COLOR_PAIR(5), "2. Medium (60 words)\n");
+            myPrint(COLOR_PAIR(6), "3. Hard (90 words)\n");
+            myPrint(COLOR_PAIR(4), "Press 1, 2 or 3: ");
             refresh();
             int ch;
             while (1) {
@@ -133,11 +133,11 @@ void display_final_stats(int correct_symbols, int correct_words, int mistakes_co
                     break;
                 } else {
                     clear();
-                    printwa(COLOR_PAIR(2), "Invalid input. Please select difficulty:\n");
-                    printwa(COLOR_PAIR(4), "1. Easy (30 words)\n");
-                    printwa(COLOR_PAIR(5), "2. Medium (60 words)\n");
-                    printwa(COLOR_PAIR(6), "3. Hard (90 words)\n");
-                    printwa(COLOR_PAIR(4), "Press 1, 2 or 3: ");
+                    myPrint(COLOR_PAIR(2), "Invalid input. Please select difficulty:\n");
+                    myPrint(COLOR_PAIR(4), "1. Easy (30 words)\n");
+                    myPrint(COLOR_PAIR(5), "2. Medium (60 words)\n");
+                    myPrint(COLOR_PAIR(6), "3. Hard (90 words)\n");
+                    myPrint(COLOR_PAIR(4), "Press 1, 2 or 3: ");
                     refresh();
                 }
             }
@@ -146,7 +146,7 @@ void display_final_stats(int correct_symbols, int correct_words, int mistakes_co
             start_typing_test(ch - '0');
         }
         else {
-            printwa(COLOR_PAIR(2), "Press Esc to exit or Enter to restart the game.\n");
+            myPrint(COLOR_PAIR(2), "Press Esc to exit or Enter to restart the game.\n");
         }
     }
 }
@@ -166,20 +166,20 @@ void start_typing_test(int difficulty) {
     initialize_colors();
 
     
-    printwa(COLOR_PAIR(3), "Welcome to the typing test!\n");
+    myPrint(COLOR_PAIR(3), "Welcome to the typing test!\n");
     // print the chosen difficulty here
-    printwa(COLOR_PAIR(3), "Difficulty: ");
+    myPrint(COLOR_PAIR(3), "Difficulty: ");
     if (difficulty == 1) {
-        printwa(COLOR_PAIR(3), "Easy\n");
+        myPrint(COLOR_PAIR(3), "Easy\n");
         words = 30;
     } else if (difficulty == 2) {
-        printwa(COLOR_PAIR(3), "Medium\n");
+        myPrint(COLOR_PAIR(3), "Medium\n");
         words = 60;
     } else if (difficulty == 3) {
-        printwa(COLOR_PAIR(3), "Hard\n");
+        myPrint(COLOR_PAIR(3), "Hard\n");
         words = 90;
     }
-    printwa(COLOR_PAIR(4), "Press Enter to start the game.");
+    myPrint(COLOR_PAIR(4), "Press Enter to start the game.");
     char ch=getch();
     if(ch == 27) {
         endwin();
@@ -192,10 +192,10 @@ void start_typing_test(int difficulty) {
 
     gen_text(text, words_per_line, difficulty);
     gen_text(next_text, words_per_line, difficulty);
-    mvprintwa(0, 0, COLOR_PAIR(6), "Type this text:");
+    myMvPrint(0, 0, COLOR_PAIR(6), "Type this text:");
     mvprintw(1, 0, "%s", text);
     mvprintw(2, 0, "%s", next_text);
-    mvprintwa(3, 0, COLOR_PAIR(6), "Your typing:");
+    myMvPrint(3, 0, COLOR_PAIR(6), "Your typing:");
 
 
     time_t start_time = time(NULL);

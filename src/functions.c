@@ -42,10 +42,11 @@ void gen_text(char *text, int num_words, int difficulty) {
         }
     }
 
-    text[strlen(text) - 1] = '\0';
+    text[strlen(text) - 1] = '\n';
+    text[strlen(text)] = '\0';
 }
 
-void printwa(int attribute, const char *format, ...) {
+void myPrint(int attribute, const char *format, ...) {
     attron(attribute);
     va_list args;
     va_start(args, format);
@@ -54,7 +55,7 @@ void printwa(int attribute, const char *format, ...) {
     attroff(attribute);
 }
 
-void mvprintwa(int y, int x, int attrs, const char *format, ...) {
+void myMvPrint(int y, int x, int attrs, const char *format, ...) {
     attron(attrs);
     va_list args;
     va_start(args, format);
