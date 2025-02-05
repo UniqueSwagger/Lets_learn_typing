@@ -32,7 +32,7 @@ void process_input(char *text, char *input, size_t *pos, int *words, int *correc
             input[*pos] = '\0';
         }
     } else {
-        if (text[*pos] == ' ') {
+        if (text[*pos] == ' ' || text[*pos] == '\n') {
             (*words)--;
             size_t word_start = *pos;
             while (word_start > 0 && text[word_start - 1] != ' ') {
@@ -42,7 +42,7 @@ void process_input(char *text, char *input, size_t *pos, int *words, int *correc
                 (*correct_words)++;
             }
         } else if (ch == text[*pos]) {
-            (*correct_symbols)++; 
+            (*correct_symbols)++;
         } else {
             (*mistakes_count)++;
         }
@@ -68,9 +68,9 @@ void update_screen(char *text, char *input, size_t pos, int correct_symbols, int
 
     time_t time_now = time(NULL);
     double difference = difftime(time_now, start_time);
-    double cpm = correct_symbols / (difference / 60);
+    double cpm = (double)correct_symbols / (difference / 60);
     double wpm = (double)correct_words / (difference / 60);
-    myMvPrint(5, 0, COLOR_PAIR(1) | A_BOLD, "Words left: %d; Mistakes: %d; WPM: %.0lf; CPM: %.0lf\tTime: %.0lfs", words, mistakes_count, wpm, cpm, difference);
+    myMvPrint(5, 0, COLOR_PAIR(1) | A_BOLD, "Words left: %d; Mistakes: %d; WPM: %.2lf; CPM: %.2lf\tTime: %.0lfs", words, mistakes_count, wpm, cpm, difference);
     refresh();
 }
 
@@ -93,19 +93,19 @@ void display_final_stats(int correct_symbols, int correct_words, int mistakes_co
     time_t end_time = time(NULL);
     double test_duration = difftime(end_time, start_time);
     double accuracy = (correct_symbols + mistakes_count) > 0 ? ((double)correct_symbols / (correct_symbols + mistakes_count)) * 100.0 : 0.0;
-    double cpm = test_duration > 0 ? correct_symbols / (test_duration / 60.0) : 0.0;
-    double wpm = test_duration > 0 ? correct_words / (test_duration / 60.0) : 0.0;
-    double cps = test_duration > 0 ? correct_symbols / test_duration : 0.0;
+    double cpm = test_duration > 0 ? (double)correct_symbols / (test_duration / 60.0) : 0.0;
+    double wpm = test_duration > 0 ? (double)correct_words / (test_duration / 60.0) : 0.0;
+    double cps = test_duration > 0 ? (double)correct_symbols / test_duration : 0.0;
 
     clear();
     move(0, 0);
     myPrint(COLOR_PAIR(4), "Test completed!\n");
     printw("Correct characters: %d\n", correct_symbols);
     printw("Mistakes: %d\n", mistakes_count);
-    printw("Accuracy: %.0lf\n", accuracy);
-    printw("Words per minute (WPM): %.0lf\n", wpm);
-    printw("Characters per minute (CPM): %.0lf\n", cpm);
-    printw("Characters per second (CPS): %.0lf\n", cps);
+    printw("Accuracy: %.2lf\n", accuracy);
+    printw("Words per minute (WPM): %.2lf\n", wpm);
+    printw("Characters per minute (CPM): %.2lf\n", cpm);
+    printw("Characters per second (CPS): %.2lf\n", cps);
     printw("Test duration: %.0lf seconds\n", test_duration);
     myPrint(COLOR_PAIR(2), "Press Esc to exit or Enter to restart the game.\n");
     refresh();
@@ -146,7 +146,8 @@ void display_final_stats(int correct_symbols, int correct_words, int mistakes_co
             start_typing_test(ch - '0');
         }
         else {
-            myPrint(COLOR_PAIR(2), "Press Esc to exit or Enter to restart the game.\n");
+            // Not looking good for the UI 
+            // myPrint(COLOR_PAIR(2), "Press Esc to exit or Enter to restart the game.\n");
         }
     }
 }
@@ -219,7 +220,7 @@ void start_typing_test(int difficulty) {
             update_screen(text, input, pos, correct_symbols, correct_words, words, mistakes_count, start_time);
         }
         // test will run for 60 seconds
-        if (difftime(time(NULL), start_time) > 60) {
+        if (difftime(time(NULL), start_time) >= 60) {
             break;
         }
     }

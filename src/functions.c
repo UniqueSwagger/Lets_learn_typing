@@ -42,8 +42,8 @@ void gen_text(char *text, int num_words, int difficulty) {
         }
     }
 
-    text[strlen(text) - 1] = '\n';
-    text[strlen(text)] = '\0';
+    strcat(text, "\n");
+    text[strlen(text)-1] = '\0';
 }
 
 void myPrint(int attribute, const char *format, ...) {
